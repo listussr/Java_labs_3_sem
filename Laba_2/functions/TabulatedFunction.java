@@ -7,7 +7,7 @@ public class TabulatedFunction{
         //Создаём новый массив точек
         this.points = new FunctionPoint[pointCounts];
         //Высчитываем шаг изменения по x
-        double step = (rightX - leftX) / (double)pointCounts;
+        double step = (rightX - leftX) / ((double)pointCounts - 1);
         for (int i = 0; i < pointCounts; i++) {
             points[i] = new FunctionPoint(leftX + i * step, 0.);
         }
@@ -16,7 +16,7 @@ public class TabulatedFunction{
     public TabulatedFunction(double leftX, double rightX, double[] values){
         //Создаём новый массив точек
         //tab_function = new TreeMap<FunctionPoint, Double>(pointCounts);
-        double step = (rightX - leftX) / (double)values.length;
+        double step = (rightX - leftX) / ((double)values.length - 1);
         this.points = new FunctionPoint[values.length];
         for (int i = 0; i < values.length; ++i) {
             this.points[i] = new FunctionPoint(leftX + i * step, values[i]);
@@ -67,7 +67,6 @@ public class TabulatedFunction{
          */
         if(point.getX() < this.points[index - 1].getX() || point.getX() > this.points[index + 1].getX())
             return;
-        this.points[index] = null;
         this.points[index] = new FunctionPoint(point.getX(), point.getY());
     }
 
@@ -100,9 +99,9 @@ public class TabulatedFunction{
         FunctionPoint[] arr = new FunctionPoint[this.points.length + 1];
         int i = 0;
         while(point.getX() > this.points[i++].getX());
-        System.arraycopy(this.points, 0, arr, 0, i);
+        System.arraycopy(this.points, 0, arr, 0, i - 1);
         arr[i++] = point;
-        System.arraycopy(this.points, i - 1, arr, i, this.points.length);
+        System.arraycopy(this.points, i - 1, arr, i, this.points.length - i + 1);
         this.points = arr;
         arr = null;
     }

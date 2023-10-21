@@ -14,10 +14,10 @@ public class SimpleIntegrator implements Runnable {
             if(this.task.f == null){
                 continue;
             }
-            synchronized (this.task) {
+            //synchronized (this.task) {
                 double res = Functions.integral(this.task.f, this.task.leftX, this.task.rightX, this.task.step);
                 System.out.println("Result <" + this.task.leftX + "> <" + this.task.rightX + "> <" + this.task.step + "> <" + res + ">");
-            }
+            //}
         }
     }
 }

@@ -267,11 +267,26 @@ class Main_7 {
         }
     }
     public static void simpleThread() {
-        Task t = new Task(2);
+        Task t = new Task(100);
         Thread generator_thread = new Thread(new SimpleGenerator(t));
         generator_thread.start();
         Thread integrator_thread = new Thread(new SimpleIntegrator(t));
         integrator_thread.start();
+    }
+
+    public static void complicatedThreads() throws InterruptedException {
+        Task t = new Task(100);
+        Semaphore semaphore = new Semaphore();
+        Thread generator = new Generator(t, semaphore);
+        generator.start();
+
+        Thread integrator = new Integrator(t, semaphore);
+        System.out.println("Generator priority = " + generator.getPriority());
+        System.out.println("Integrator priority = " + integrator.getPriority());
+        integrator.start();
+        Thread.sleep(50);
+        generator.interrupt();
+        integrator.interrupt();
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
@@ -279,6 +294,11 @@ class Main_7 {
         // 1,7182818284590452353602874713527 интеграл от e^x от 0 до 1
         System.out.println(Functions.integral(exp, 0, 1, 0.00000001));
         //nonThread();
-        simpleThread();
+        //simpleThread();
+        try {
+            complicatedThreads();
+        }catch(InterruptedException e){
+            System.out.println(e.getMessage());
+        }
     }
 }
