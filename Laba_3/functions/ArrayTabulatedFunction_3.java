@@ -2,7 +2,7 @@ package functions;
 
 import java.util.Arrays;
 
-public class ArrayTabulatedFunction_3 {
+public class ArrayTabulatedFunction_3 implements TabulatedFunction {
     private FunctionPoint_3[] points;
 
     public ArrayTabulatedFunction_3(){

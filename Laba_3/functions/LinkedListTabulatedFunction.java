@@ -83,7 +83,7 @@ class FunctionNode {
     }
 }
 
-public class LinkedListTabulatedFunction {
+public class LinkedListTabulatedFunction implements TabulatedFunction{
     private final FunctionNode head;
     public int length;
     public LinkedListTabulatedFunction(){
@@ -205,10 +205,14 @@ public class LinkedListTabulatedFunction {
         FunctionNode node = new FunctionNode(point);
         if (index == 0 && this.length == 0){
             this.head.setNext(node);
-            ++length;
-            return node;
-        }
-        else {
+        } else if (index == 0) {
+            FunctionNode ptr = this.head.getNext();
+            ptr.getPrev().setNext(node);
+            node.setNext(ptr);
+            node.setPrev(ptr.getPrev());
+            ptr.setPrev(node);
+            this.head.setNext(node);
+        } else {
             FunctionNode ptr = this.head.getNext();
             for (int i = 0; i <= index; i++) {
                 ptr = ptr.getNext();
@@ -217,9 +221,9 @@ public class LinkedListTabulatedFunction {
             node.setNext(ptr);
             ptr.getPrev().setNext(node);
             ptr.setPrev(node);
-            ++length;
-            return node;
         }
+        ++length;
+        return node;
     }
     public FunctionNode deleteNodeByIndex(int index) throws FunctionPointIndexOutOfBoundsException, IllegalStateException{
         /*
@@ -236,7 +240,7 @@ public class LinkedListTabulatedFunction {
         }
         ptr.getPrev().setNext(ptr.getNext());
         ptr.getNext().setPrev(ptr.getPrev());
-        ++length;
+        --length;
         return ptr;
     }
     // Разделение методов списка и методов для функции
